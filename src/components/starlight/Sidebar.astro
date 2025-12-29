@@ -1,0 +1,434 @@
+---
+import { getCollection } from 'astro:content';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import { Icon } from '@astrojs/starlight/components';
+
+import { formatDate, toDate } from '../../lib/dates';
+import { parseWhitepaperId } from '../../lib/whitepapers';
+
+const currentPath = Astro.url.pathname;
+
+const sidebarMaxItems = (() => {
+	const raw = import.meta.env.PUBLIC_SIDEBAR_MAX_ITEMS;
+	const parsed = raw ? parseInt(raw, 10) : 10;
+	if (!Number.isFinite(parsed)) return 10;
+	return Math.min(50, Math.max(1, parsed));
+})();
+
+const currentGroupIndexSymbol = Symbol.for('starlight-sidebar-group-index');
+const locals = Astro.locals as App.Locals & { [currentGroupIndexSymbol]?: number };
+function nextGroupIndex() {
+	const index = locals[currentGroupIndexSymbol] || 0;
+	locals[currentGroupIndexSymbol] = index + 1;
+	return index;
+}
+const groupIndex = {
+	notes: nextGroupIndex(),
+	whitepapers: nextGroupIndex(),
+	tutorials: nextGroupIndex(),
+	posts: nextGroupIndex(),
+};
+
+const docs = await getCollection('docs');
+
+function listByPrefix(prefix: string, limit: number) {
+  const all = docs
+    .filter((e) => e.slug.startsWith(prefix) && e.data?.date)
+    .sort((a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0));
+  return { items: all.slice(0, limit), total: all.length };
+}
+
+const notesList = listByPrefix('notes/', sidebarMaxItems);
+const postsList = listByPrefix('posts/', sidebarMaxItems);
+const tutorialsList = listByPrefix('tutorials/', sidebarMaxItems);
+
+// For whitepapers, show the latest version for each slug, sorted by date.
+const whitepaperEntries = docs.filter((e) => e.slug.startsWith('whitepapers/') && e.data?.date);
+const whitepaperGroups = new Map<string, typeof whitepaperEntries>();
+for (const e of whitepaperEntries) {
+  const parsed = parseWhitepaperId(e.id);
+  const key = parsed.slug;
+  const arr = whitepaperGroups.get(key) ?? [];
+  arr.push(e);
+  whitepaperGroups.set(key, arr);
+}
+
+const whitepaperLatest = Array.from(whitepaperGroups.entries())
+  .map(([key, entries]) => {
+    const latest = entries.sort(
+      (a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0)
+    )[0];
+    return { key, entry: latest };
+  })
+  .sort((a, b) => (toDate(b.entry.data.date)?.getTime() ?? 0) - (toDate(a.entry.data.date)?.getTime() ?? 0))
+	.slice(0, sidebarMaxItems);
+const whitepapersTotal = whitepaperGroups.size;
+
+const showNotes = notesList.total > 0 || isInSection('/notes/');
+const showWhitepapers = whitepapersTotal > 0 || isInSection('/whitepapers/');
+const showTutorials = tutorialsList.total > 0 || isInSection('/tutorials/');
+const showPosts = postsList.total > 0 || isInSection('/posts/');
+
+function pathForSlug(slug: string) {
+  return `/${slug}/`;
+}
+
+function isCurrent(href: string) {
+  return currentPath === href;
+}
+
+function isInSection(sectionPath: string) {
+  return currentPath === sectionPath || currentPath.startsWith(sectionPath);
+}
+---
+
+<SidebarPersister>
+	<ul class="top-level">
+		<li>
+			<a href="/latest/" aria-current={isCurrent('/latest/') && 'page'} class="large">Latest</a>
+		</li>
+
+		{showNotes && (
+			<li>
+				<details open={isInSection('/notes/')}>
+					<summary>
+						<a
+							class="section-link large"
+							href="/notes/"
+							aria-current={isCurrent('/notes/') && 'page'}
+							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
+						>
+							Notes
+						</a>
+						<span class="caret-hit">
+							<Icon name="right-caret" class="caret" size="1.25rem" />
+						</span>
+					</summary>
+					<sl-sidebar-restore data-index={groupIndex.notes}></sl-sidebar-restore>
+					<ul class="section-children">
+						{notesList.items.map((e) => (
+							<li>
+								<a href={pathForSlug(e.slug)} aria-current={isCurrent(pathForSlug(e.slug)) && 'page'}>
+									<span>{e.data.title}</span>
+								</a>
+							</li>
+						))}
+						{notesList.total > notesList.items.length && (
+							<li>
+								<a class="show-all" href="/notes/">… (show all)</a>
+							</li>
+						)}
+					</ul>
+				</details>
+			</li>
+		)}
+
+		{showWhitepapers && (
+			<li>
+				<details open={isInSection('/whitepapers/')}>
+					<summary>
+						<a
+							class="section-link large"
+							href="/whitepapers/"
+							aria-current={isCurrent('/whitepapers/') && 'page'}
+							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
+						>
+							Whitepapers
+						</a>
+						<span class="caret-hit">
+							<Icon name="right-caret" class="caret" size="1.25rem" />
+						</span>
+					</summary>
+					<sl-sidebar-restore data-index={groupIndex.whitepapers}></sl-sidebar-restore>
+					<ul class="section-children">
+						{whitepaperLatest.map((w) => (
+							<li>
+								<a
+									href={pathForSlug(w.entry.slug)}
+									aria-current={isCurrent(pathForSlug(w.entry.slug)) && 'page'}
+								>
+									<span>{w.entry.data.title}</span>
+								</a>
+							</li>
+						))}
+						{whitepapersTotal > whitepaperLatest.length && (
+							<li>
+								<a class="show-all" href="/whitepapers/">… (show all)</a>
+							</li>
+						)}
+					</ul>
+				</details>
+			</li>
+		)}
+
+		{showTutorials && (
+			<li>
+				<details open={isInSection('/tutorials/')}>
+					<summary>
+						<a
+							class="section-link large"
+							href="/tutorials/"
+							aria-current={isCurrent('/tutorials/') && 'page'}
+							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
+						>
+							Tutorials
+						</a>
+						<span class="caret-hit">
+							<Icon name="right-caret" class="caret" size="1.25rem" />
+						</span>
+					</summary>
+					<sl-sidebar-restore data-index={groupIndex.tutorials}></sl-sidebar-restore>
+					<ul class="section-children">
+						{tutorialsList.items.map((e) => (
+							<li>
+								<a href={pathForSlug(e.slug)} aria-current={isCurrent(pathForSlug(e.slug)) && 'page'}>
+									<span>{e.data.title}</span>
+								</a>
+							</li>
+						))}
+						{tutorialsList.total > tutorialsList.items.length && (
+							<li>
+								<a class="show-all" href="/tutorials/">… (show all)</a>
+							</li>
+						)}
+					</ul>
+				</details>
+			</li>
+		)}
+
+		{showPosts && (
+			<li>
+				<details open={isInSection('/posts/')}>
+					<summary>
+						<a
+							class="section-link large"
+							href="/posts/"
+							aria-current={isCurrent('/posts/') && 'page'}
+							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
+						>
+							Posts
+						</a>
+						<span class="caret-hit">
+							<Icon name="right-caret" class="caret" size="1.25rem" />
+						</span>
+					</summary>
+					<sl-sidebar-restore data-index={groupIndex.posts}></sl-sidebar-restore>
+					<ul class="section-children">
+						{postsList.items.map((e) => (
+							<li>
+								<a href={pathForSlug(e.slug)} aria-current={isCurrent(pathForSlug(e.slug)) && 'page'}>
+									<span>{e.data.title}</span>
+								</a>
+							</li>
+						))}
+						{postsList.total > postsList.items.length && (
+							<li>
+								<a class="show-all" href="/posts/">… (show all)</a>
+							</li>
+						)}
+					</ul>
+				</details>
+			</li>
+		)}
+
+		<li class="external-link">
+            <span class="external-link-label">Group website:</span>
+			<a href="https://svatunek-lab.com" target="_blank" rel="noopener noreferrer">
+				svatunek-lab.com
+			</a>
+		</li>
+	</ul>
+
+	<!-- Keep Starlight sidebar open state in sync with actual <details open> values.
+	     Starlight’s built-in persister only updates `open[]` when toggles happen.
+	     Because we also open sections based on the current route, we sync on navigation. -->
+	<script is:inline aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				const storageKey = 'sl-sidebar-state';
+				const scroller = document.getElementById('starlight__sidebar');
+				const target = scroller?.querySelector('sl-sidebar-state-persist');
+				const hash = target?.dataset.hash || '';
+				if (!target || !hash) return;
+
+				const syncOpenState = () => {
+					try {
+						const raw = sessionStorage.getItem(storageKey);
+						const stored = raw ? JSON.parse(raw) : {};
+						const open = Array.isArray(stored.open) && stored.hash === hash ? stored.open.slice() : [];
+						const restoreEls = target.querySelectorAll('sl-sidebar-restore[data-index]');
+						restoreEls.forEach((el) => {
+							const idx = parseInt(el.getAttribute('data-index') || '');
+							if (Number.isNaN(idx)) return;
+							const details = el.closest('details');
+							if (!details) return;
+							open[idx] = details.open;
+						});
+						const scroll = scroller?.scrollTop || 0;
+						sessionStorage.setItem(storageKey, JSON.stringify({ hash, open, scroll }));
+					} catch {}
+				};
+
+				addEventListener('pagehide', syncOpenState);
+				addEventListener('visibilitychange', () => {
+					if (document.visibilityState === 'hidden') syncOpenState();
+				});
+			} catch {}
+		})();
+	</script>
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+  <MobileMenuFooter />
+</div>
+
+<style>
+  @layer starlight.core {
+		/* Prevent sidebar width from changing when scrollbars appear/disappear. */
+		:global(.sidebar-pane) {
+			scrollbar-gutter: stable;
+		}
+
+    .large {
+      font-size: var(--sl-text-base);
+      font-weight: 600;
+      color: var(--sl-color-white);
+    }
+
+    .top-level {
+      list-style: none;
+			padding: 0;
+      margin: 0;
+    }
+
+    .top-level > li + li {
+      margin-top: 0.5rem;
+    }
+
+    li {
+      overflow-wrap: anywhere;
+    }
+
+    a {
+			display: block;
+      border-radius: 0.25rem;
+      text-decoration: none;
+      color: var(--sl-color-gray-2);
+      padding: 0.3em 0.5rem;
+      line-height: 1.3;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--sl-color-white);
+    }
+
+    a[aria-current='page'],
+    a[aria-current='page']:hover,
+    a[aria-current='page']:focus {
+      font-weight: 600;
+      color: var(--sl-color-text-invert);
+      background-color: var(--sl-color-text-accent);
+    }
+
+
+		.external-link {
+			margin-top: 0.5rem;
+			text-align: center;
+		}
+		.external-link::before {
+			content: '';
+			display: block;
+			margin-top: 1.5rem;
+			margin-bottom: 1rem;
+			border-top: 2px solid var(--sl-color-hairline-light);
+		}
+
+		.external-link a {
+			display: inline-block;
+		}
+
+		.external-link-label {
+			display: block;
+			margin-top: 0.25rem;
+			font-size: var(--sl-text-xs);
+			color: var(--sl-color-gray-3);
+		}
+
+		details {
+			margin-top: 0.25rem;
+		}
+
+		summary {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 0;
+			line-height: 1.4;
+			cursor: pointer;
+			user-select: none;
+			border-radius: 0.25rem;
+		}
+
+		summary::marker,
+		summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.section-link {
+			flex: 1;
+			padding: 0.2em 0.5rem;
+			border-radius: 0.25rem;
+			color: var(--sl-color-white);
+			font-weight: 600;
+		}
+
+		.section-link:hover,
+		.section-link:focus {
+			color: var(--sl-color-white);
+		}
+
+		.caret-hit {
+			display: flex;
+			align-items: center;
+			margin-inline-start: auto;
+			padding: 0.2em 0.5rem;
+		}
+
+		.caret {
+			transition: transform 0.2s ease-in-out;
+			flex-shrink: 0;
+			color: var(--sl-color-white);
+		}
+
+		:global([dir='rtl']) .caret {
+			transform: rotateZ(180deg);
+		}
+
+		details[open] > summary .caret {
+			transform: rotateZ(90deg);
+		}
+
+    .section-children {
+      list-style: none;
+      padding: 0;
+			margin: 0.25rem 0 0.5rem;
+			margin-inline-start: 0.5rem;
+			padding-inline-start: 0.75rem;
+			border-inline-start: 1px solid var(--sl-color-hairline-light);
+    }
+
+		.section-children a {
+			display: block;
+			margin-inline-start: 0;
+			padding-inline-start: 0.75rem;
+    }
+
+    .show-all {
+      color: var(--sl-color-gray-3);
+      font-style: italic;
+    }
+  }
+</style>

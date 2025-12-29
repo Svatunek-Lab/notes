@@ -1,0 +1,15 @@
+{
+  "name": "notes-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "astro": "^5.5.0",
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/starlight": "^0.37.1"
+  }
+}

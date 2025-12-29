@@ -1,0 +1,34 @@
+---
+import '../styles.css';
+import Nav from '../components/Nav.astro';
+
+const siteTitle = import.meta.env.SITE ?? 'Technical Notes';
+const pageTitle = Astro.props.title ? `${Astro.props.title} — ${siteTitle}` : siteTitle;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="site">
+      <aside class="sidebar">
+        <div class="brand">{siteTitle}</div>
+        <nav>
+          <Nav />
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="search">Search</div>
+        </header>
+        <article class="content">
+          <slot />
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

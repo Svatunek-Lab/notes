@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import { toDate } from '../lib/dates';
+import { parseWhitepaperId } from '../lib/whitepapers';
+
+const notes = await getCollection('notes');
+const tutorials = await getCollection('tutorials');
+const posts = await getCollection('posts');
+const whitepapers = await getCollection('whitepapers');
+
+// group whitepapers by slug (filename before --)
+const wpGroups = {};
+for (const w of whitepapers) {
+  const parts = w.id.split('--');
+  const slug = parts[0];
+  wpGroups[slug] = wpGroups[slug] || [];
+  wpGroups[slug].push(w);
+}
+
+// latest first sorting helper
+const byDateDesc = (a, b) =>
+  (toDate(b.data?.date)?.getTime() ?? 0) - (toDate(a.data?.date)?.getTime() ?? 0);
+for(const k of Object.keys(wpGroups)) wpGroups[k].sort(byDateDesc);
+
+---
+<div class="nav-root">
+  <a class="nav-home" href="/">Home</a>
+  <h4>Notes</h4>
+  {notes.sort(byDateDesc).map(n => <a href={`/notes/${n.slug}/`}>{n.data.title}</a>)}
+
+  <h4>Whitepapers</h4>
+  {Object.keys(wpGroups).map(slug => (
+    (() => {
+      const latest = wpGroups[slug][0];
+      const p = parseWhitepaperId(latest.id);
+      return (
+        <a href={`/whitepapers/${p.slug}/${p.version}/`}>
+          {latest.data.title} (latest)
+        </a>
+      );
+    })()
+  ))}
+
+  <h4>Tutorials</h4>
+  {tutorials.sort(byDateDesc).map(t => <a href={`/tutorials/${t.slug}/`}>{t.data.title}</a>)}
+
+  <h4>Posts</h4>
+  {posts.sort(byDateDesc).map(p => <a href={`/posts/${p.slug}/`}>{p.data.title}</a>)}
+</div>

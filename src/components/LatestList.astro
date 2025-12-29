@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import { formatDate, toDate } from '../lib/dates';
+
+export interface Props {
+  prefix?: string;
+  limit?: number;
+}
+
+const { prefix, limit = 10 } = Astro.props;
+
+const docs = await getCollection('docs');
+
+const filtered = docs
+  .filter((e) => {
+    if (!e.data?.date) return false;
+    if (!prefix) return true;
+    return e.slug === prefix || e.slug.startsWith(`${prefix}/`);
+  })
+  .sort((a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0))
+  .slice(0, limit);
+---
+<ul>
+  {filtered.map((e) => (
+    <li>
+      <a href={`/${e.slug}/`}>{e.data.title}</a>
+      <div class="meta">
+        {formatDate(e.data.date)} {e.data.author ? `— ${e.data.author}` : ''}
+      </div>
+      {e.data.abstract ? <p>{e.data.abstract}</p> : null}
+    </li>
+  ))}
+</ul>

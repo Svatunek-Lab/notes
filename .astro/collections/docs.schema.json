@@ -1,0 +1,84 @@
+{
+  "$ref": "#/definitions/docs",
+  "definitions": {
+    "docs": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "integer",
+                  "format": "unix-time"
+                }
+              ]
+            }
+          ]
+        },
+        "author": {
+          "type": "string"
+        },
+        "abstract": {
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "version": {
+          "type": "string"
+        },
+        "head": {
+          "type": "array",
+          "items": {},
+          "default": []
+        },
+        "sidebar": {
+          "type": "object",
+          "properties": {
+            "hidden": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import { formatDate, toDate } from '../../lib/dates';
+import { parseWhitepaperId } from '../../lib/whitepapers';
+
+const route = Astro.locals.starlightRoute;
+const entry = route.entry;
+const { title, date, author, version } = entry.data as {
+  title: string;
+  date?: string | Date;
+  author?: string;
+  version?: string;
+};
+
+const isWhitepaper = entry.slug?.startsWith('whitepapers/');
+
+let whitepaperVersions:
+  | Array<{ slug: string; label: string; date?: string | Date }>
+  | null = null;
+
+if (isWhitepaper) {
+  const { slug: baseSlug } = parseWhitepaperId(entry.id);
+  const docs = await getCollection('docs');
+  const matches = docs
+    .filter((e) => e.slug.startsWith('whitepapers/') && parseWhitepaperId(e.id).slug === baseSlug)
+    .sort((a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0));
+
+  if (matches.length > 1) {
+    whitepaperVersions = matches.map((e) => {
+      const parsed = parseWhitepaperId(e.id);
+      const label = (e.data.version || parsed.version || 'version') as string;
+      return { slug: e.slug, label, date: e.data.date };
+    });
+  }
+}
+---
+
+<h1 id="_top">{title}</h1>
+
+{(date || author || version) && (
+  <div class="notes-meta">
+    {date ? formatDate(date) : null}
+    {date && author ? ' — ' : null}
+    {author ? author : null}
+    {!date && !author && version ? version : null}
+  </div>
+)}
+
+{whitepaperVersions && (
+  <div class="notes-versions">
+    <div class="notes-meta">Other versions</div>
+    <ul>
+      {whitepaperVersions.map((v) => (
+        <li>
+          <a href={`/${v.slug}/`} aria-current={v.slug === entry.slug ? 'page' : undefined}>
+            {v.label}{v.date ? ` (${formatDate(v.date)})` : ''}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+<style>
+  @layer starlight.core {
+    h1 {
+      margin-top: 1rem;
+      font-size: var(--sl-text-h1);
+      line-height: var(--sl-line-height-headings);
+      font-weight: 600;
+      color: var(--sl-color-white);
+    }
+  }
+</style>

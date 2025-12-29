@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import { formatDate, toDate } from '../lib/dates';
+import { parseWhitepaperId } from '../lib/whitepapers';
+
+const docs = await getCollection('docs');
+
+const whitepapers = docs.filter((e) => e.slug.startsWith('whitepapers/') && e.data?.date);
+
+const groups: Record<string, typeof whitepapers> = {};
+for (const w of whitepapers) {
+  const filename = w.id;
+  const parsed = parseWhitepaperId(filename);
+  const key = parsed.slug;
+  groups[key] ??= [];
+  groups[key].push(w);
+}
+
+const sortedGroups = Object.keys(groups)
+  .map((slug) => {
+    const versions = groups[slug].sort(
+      (a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0)
+    );
+    return { slug, latest: versions[0], versions };
+  })
+  .sort((a, b) => (toDate(b.latest.data.date)?.getTime() ?? 0) - (toDate(a.latest.data.date)?.getTime() ?? 0));
+---
+<ul>
+  {sortedGroups.map((g) => (
+    <li>
+      <a href={`/${g.latest.slug}/`}>{g.latest.data.title}</a>
+      <div class="meta">
+        {formatDate(g.latest.data.date)} {g.latest.data.author ? `— ${g.latest.data.author}` : ''}
+      </div>
+      <ul>
+        {g.versions.map((v) => (
+          <li>
+            <a href={`/${v.slug}/`}>
+              {(v.data.version || parseWhitepaperId(v.id).version) ?? 'version'} — {formatDate(v.data.date)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </li>
+  ))}
+</ul>

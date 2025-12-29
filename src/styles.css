@@ -1,0 +1,40 @@
+
+
+/* Software card block */
+.swcard {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 12px;
+  padding: 0.9rem 1rem 0.95rem;
+  margin: 1.1rem 0 1.4rem;
+  background: color-mix(
+    in srgb,
+    var(--sl-color-bg) 96%,
+    var(--sl-color-gray-6)
+  );
+}
+
+/* Title line */
+.swcard-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Metadata line (platform, version, etc.) */
+.swcard-meta {
+  font-size: 1.0rem;
+  color: var(--sl-color-gray-2);
+  margin-bottom: 0.55rem;
+}
+
+/* Paragraph spacing inside card */
+.swcard p {
+  margin: 0.4rem 0;
+}
+
+.swcard-divider {
+  border: none;
+  border-top: 1px solid var(--sl-color-gray-6);
+  margin: 0.6rem 0 0.7rem;
+}
+

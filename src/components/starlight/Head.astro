@@ -1,0 +1,100 @@
+---
+const starlightRoute = (Astro.locals as any)['starlightRoute'] as
+	| { head?: any[]; entry?: any }
+	| undefined;
+const head = starlightRoute?.head ?? [];
+const entry = starlightRoute?.entry;
+
+const defaultDescription =
+	'Notes from the Svatunek Lab (TU Wien) on computational chemistry (CompChem), tutorials, posts, and whitepapers.';
+const defaultKeywords = 'computational chemistry, compchem, TU Wien, Vienna, Svatunek Lab, chemistry';
+
+const hasLink = (predicate: (attrs: Record<string, any> | undefined) => boolean) =>
+	head.some((item) => item.tag === 'link' && predicate(item.attrs as any));
+
+const hasMeta = (predicate: (attrs: Record<string, any> | undefined) => boolean) =>
+	head.some((item) => item.tag === 'meta' && predicate(item.attrs as any));
+
+const rawDescription =
+	(typeof (entry as any)?.data?.description === 'string' && (entry as any).data.description) ||
+	(typeof (entry as any)?.data?.abstract === 'string' && (entry as any).data.abstract) ||
+	'';
+
+const description = rawDescription.trim().replace(/\s+/g, ' ');
+
+const canonicalBase = (() => {
+	const configured = Astro.site;
+	if (!configured) return new URL('https://notes.svatunek-lab.com');
+	// Avoid emitting localhost canonical URLs.
+	if (configured.hostname === 'localhost') return new URL('https://notes.svatunek-lab.com');
+	return configured;
+})();
+
+const canonicalHref = new URL(Astro.url.pathname, canonicalBase).toString();
+
+const author = typeof entry?.data?.author === 'string' ? entry.data.author.trim() : '';
+
+const rawTags = entry?.data?.tags;
+const tags = (() => {
+	if (Array.isArray(rawTags)) {
+		return rawTags.filter((t): t is string => typeof t === 'string').map((t) => t.trim()).filter(Boolean);
+	}
+	if (typeof rawTags === 'string') {
+		return rawTags
+			.split(',')
+			.map((t) => t.trim())
+			.filter(Boolean);
+	}
+	return [] as string[];
+})();
+
+const uniqueTags = Array.from(new Set(tags));
+const keywords = uniqueTags.join(', ');
+---
+
+{head.map(({ tag: Tag, attrs, content }) => (
+	<Tag {...attrs} set:html={content} />
+))}
+
+{!hasLink((attrs) => attrs?.rel === 'canonical') && <link rel="canonical" href={canonicalHref} />}
+
+{author && !hasMeta((attrs) => attrs?.name === 'author') && <meta name="author" content={author} />}
+{author && !hasMeta((attrs) => attrs?.property === 'article:author') && (
+	<meta property="article:author" content={author} />
+)}
+
+{description && !hasMeta((attrs) => attrs?.name === 'description') && (
+	<meta name="description" content={description} />
+)}
+{description && !hasMeta((attrs) => attrs?.property === 'og:description') && (
+	<meta property="og:description" content={description} />
+)}
+{description && !hasMeta((attrs) => attrs?.name === 'twitter:description') && (
+	<meta name="twitter:description" content={description} />
+)}
+
+{!description && !hasMeta((attrs) => attrs?.name === 'description') && (
+	<meta name="description" content={defaultDescription} />
+)}
+{!description && !hasMeta((attrs) => attrs?.property === 'og:description') && (
+	<meta property="og:description" content={defaultDescription} />
+)}
+{!description && !hasMeta((attrs) => attrs?.name === 'twitter:description') && (
+	<meta name="twitter:description" content={defaultDescription} />
+)}
+
+{uniqueTags.length > 0 && !hasMeta((attrs) => attrs?.name === 'keywords') && (
+	<meta name="keywords" content={keywords} />
+)}
+{uniqueTags.length === 0 && !hasMeta((attrs) => attrs?.name === 'keywords') && (
+	<meta name="keywords" content={defaultKeywords} />
+)}
+{uniqueTags.map((tag) => (
+	<meta property="article:tag" content={tag} />
+))}
+
+<script
+	defer
+	data-domain="notes.svatunek-lab.com"
+	src="https://a-chem.svatunek-lab.com/js/script.outbound-links.pageview-props.tagged-events.js"
+></script>
