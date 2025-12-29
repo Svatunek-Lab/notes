@@ -1,0 +1,17 @@
+---
+import Default from '@astrojs/starlight/components/Search.astro';
+---
+
+<Default {...Astro.props} />
+
+<style is:global>
+  starlight-search dialog[open] {
+    position: fixed !important;
+    top: 3rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    width: min(90vw, 600px) !important;
+    max-height: calc(100vh - 6rem) !important;
+  }
+</style>
