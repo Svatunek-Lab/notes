@@ -8,6 +8,7 @@ const base = {
   author: z.string().optional(),
   abstract: z.string().optional(),
   tags: z.union([z.array(z.string()), z.string()]).optional(),
+  image: z.string().optional(),
 };
 
 export const notes = defineCollection({
@@ -44,6 +45,7 @@ export const docs = defineCollection({
       abstract: z.string().optional(),
       tags: z.union([z.array(z.string()), z.string()]).optional(),
       version: z.string().optional(),
+      image: z.string().optional(),
     }),
   }),
 });

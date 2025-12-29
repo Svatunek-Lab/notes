@@ -5,6 +5,7 @@ author: Dennis Svatunek
 abstract: "Notes on using Windows on ARM for (Computational) Chemistry. What works and what doesn't."
 head: []
 tags: windows-on-arm, compchem, chemistry, snapdragon-x-elite
+image: /images/Windows_on_arm.png
 ---
 
 This is a **living document** based on my day-to-day use of a **Zenbook A14 (Snapdragon X Elite)** running **Windows on ARM**. I will document which commonly used software packages work or do not work. Overall I love this laptop. It's snappy, incredibly light, and the battery life is amazing.

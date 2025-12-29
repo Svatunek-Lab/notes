@@ -50,6 +50,9 @@ const tags = (() => {
 
 const uniqueTags = Array.from(new Set(tags));
 const keywords = uniqueTags.join(', ');
+
+const image = typeof entry?.data?.image === 'string' ? entry.data.image.trim() : '';
+const imageUrl = image ? new URL(image, canonicalBase).toString() : '';
 ---
 
 {head.map(({ tag: Tag, attrs, content }) => (
@@ -92,6 +95,19 @@ const keywords = uniqueTags.join(', ');
 {uniqueTags.map((tag) => (
 	<meta property="article:tag" content={tag} />
 ))}
+
+{imageUrl && !hasMeta((attrs) => attrs?.property === 'og:image') && (
+	<meta property="og:image" content={imageUrl} />
+)}
+{imageUrl && !hasMeta((attrs) => attrs?.property === 'og:image:type') && (
+	<meta property="og:image:type" content="image/png" />
+)}
+{imageUrl && !hasMeta((attrs) => attrs?.name === 'twitter:image') && (
+	<meta name="twitter:image" content={imageUrl} />
+)}
+{imageUrl && !hasMeta((attrs) => attrs?.name === 'twitter:card') && (
+	<meta name="twitter:card" content="summary_large_image" />
+)}
 
 <script
 	defer
