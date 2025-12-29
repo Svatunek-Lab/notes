@@ -28,13 +28,6 @@ export default defineConfig({
         Sidebar: './src/components/starlight/Sidebar.astro',
         PageTitle: './src/components/starlight/PageTitle.astro',
       },
-      sidebar: [
-        { label: 'Latest', link: '/latest/' },
-        { label: 'Notes', link: '/notes/' },
-        { label: 'Whitepapers', link: '/whitepapers/' },
-        { label: 'Tutorials', link: '/tutorials/' },
-        { label: 'Posts', link: '/posts/' },
-      ],
       // Starlight uses `src/content/docs/` by default.
       // Keep defaults for now;
     }),

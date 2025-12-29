@@ -1,4 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="currentColor" />
-  <path d="M20 44V20h24v6H28v4h14v6H28v8z" fill="#fff"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 692.21 769.87">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffae34;
+      }
+
+      .cls-2 {
+        mask: url(#mask);
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #ffae34;
+        stroke-miterlimit: 10;
+        stroke-width: 25px;
+      }
+
+      .cls-4 {
+        filter: url(#luminosity-noclip);
+      }
+    </style>
+    <filter id="luminosity-noclip" x="-10" y="-10" width="712.21" height="789.87" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="SourceGraphic" in2="bg"/>
+    </filter>
+    <mask id="mask" x="-10" y="-10" width="712.21" height="789.87" maskUnits="userSpaceOnUse">
+      <g class="cls-4">
+        <g>
+          <circle cx="346.11" cy="95" r="105"/>
+          <circle cx="95.02" cy="239.97" r="105"/>
+          <circle cx="95.02" cy="529.9" r="105"/>
+          <circle cx="346.11" cy="674.87" r="105"/>
+          <circle cx="597.2" cy="529.9" r="105"/>
+          <circle cx="597.2" cy="239.97" r="105"/>
+        </g>
+      </g>
+    </mask>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-2">
+      <polygon class="cls-3" points="346.11 95 95.02 239.97 95.02 529.9 346.11 674.87 597.2 529.9 597.2 239.97 346.11 95"/>
+    </g>
+    <circle class="cls-1" cx="346.11" cy="95" r="95"/>
+    <circle class="cls-1" cx="95.02" cy="239.97" r="95"/>
+    <circle class="cls-1" cx="95.02" cy="529.9" r="95"/>
+    <circle class="cls-1" cx="346.11" cy="674.87" r="95"/>
+    <circle class="cls-1" cx="597.2" cy="529.9" r="95"/>
+    <circle class="cls-1" cx="597.2" cy="239.97" r="95"/>
+    <g>
+      <path class="cls-1" d="M217.36,469.18v-35l118.25-144.5,10-.5v34.5l-118.25,144.75-10,.75Z"/>
+      <path class="cls-1" d="M347.61,469.18v-35l118.25-144.5,10-.5v34.5l-118.25,144.75-10,.75Z"/>
+    </g>
+  </g>
 </svg>

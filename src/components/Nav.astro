@@ -22,13 +22,11 @@ const byDateDesc = (a, b) =>
   (toDate(b.data?.date)?.getTime() ?? 0) - (toDate(a.data?.date)?.getTime() ?? 0);
 for(const k of Object.keys(wpGroups)) wpGroups[k].sort(byDateDesc);
 
-const base = import.meta.env.BASE_URL;
-
 ---
 <div class="nav-root">
-  <a class="nav-home" href={base}>Home</a>
+  <a class="nav-home" href="/">Home</a>
   <h4>Notes</h4>
-  {notes.sort(byDateDesc).map(n => <a href={`${base}notes/${n.slug}/`}>{n.data.title}</a>)}
+  {notes.sort(byDateDesc).map(n => <a href={`/notes/${n.slug}/`}>{n.data.title}</a>)}
 
   <h4>Whitepapers</h4>
   {Object.keys(wpGroups).map(slug => (
@@ -36,7 +34,7 @@ const base = import.meta.env.BASE_URL;
       const latest = wpGroups[slug][0];
       const p = parseWhitepaperId(latest.id);
       return (
-        <a href={`${base}whitepapers/${p.slug}/${p.version}/`}>
+        <a href={`/whitepapers/${p.slug}/${p.version}/`}>
           {latest.data.title} (latest)
         </a>
       );
