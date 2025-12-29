@@ -24,18 +24,20 @@ const sortedGroups = Object.keys(groups)
     return { slug, latest: versions[0], versions };
   })
   .sort((a, b) => (toDate(b.latest.data.date)?.getTime() ?? 0) - (toDate(a.latest.data.date)?.getTime() ?? 0));
+
+const base = import.meta.env.BASE_URL;
 ---
 <ul>
   {sortedGroups.map((g) => (
     <li>
-      <a href={`/${g.latest.slug}/`}>{g.latest.data.title}</a>
+      <a href={base + '/' + g.latest.slug + '/'}>{g.latest.data.title}</a>
       <div class="meta">
         {formatDate(g.latest.data.date)} {g.latest.data.author ? `— ${g.latest.data.author}` : ''}
       </div>
       <ul>
         {g.versions.map((v) => (
           <li>
-            <a href={`/${v.slug}/`}>
+            <a href={base + '/' + v.slug + '/'}>
               {(v.data.version || parseWhitepaperId(v.id).version) ?? 'version'} — {formatDate(v.data.date)}
             </a>
           </li>
