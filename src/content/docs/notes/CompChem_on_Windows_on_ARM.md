@@ -88,12 +88,12 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
   <div class="swcard-title">xTB 6.7.1 (Linux) 🔴</div>
   <div class="swcard-meta"><b>Platform:</b> WSL2 (Conda; ARM native)</div>
   <hr class="swcard-divider">
-  <p>The conda-distributed xTB binary currently does **not behave correctly** in my setup under WSL2 on Windows on ARM. Geometry optimizations may converge but can yield **clearly unphysical structures and energies**.
+  <p>The conda-distributed xTB binary currently does <b>not behave correctly</b> in my setup under WSL2 on Windows on ARM. Geometry optimizations may converge but can yield <b>clearly unphysical structures and energies</b>.
 
 This appears to be a known issue; see  
 https://github.com/grimme-lab/xtb/issues/1151
 
-I have **not yet tried compiling xTB from source** on ARM, which should resolve the issue when using newer versions of XTB.</p>
+I have <b>not yet tried compiling xTB from source</b> on ARM, which should resolve the issue when using newer versions of XTB.</p>
 </div>
 
 <div class="swcard" id="orca-611-linux">
