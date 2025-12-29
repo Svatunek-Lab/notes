@@ -21,11 +21,15 @@ const filtered = docs
   .slice(0, limit);
 
 const base = import.meta.env.BASE_URL;
+const makePath = (slug: string) => {
+  const path = base + '/' + slug + '/';
+  return path.startsWith('//') ? path.substring(1) : path;
+};
 ---
 <ul>
   {filtered.map((e) => (
     <li>
-      <a href={base + '/' + e.slug + '/'}>{e.data.title}</a>
+      <a href={makePath(e.slug)}>{e.data.title}</a>
       <div class="meta">
         {formatDate(e.data.date)} {e.data.author ? `— ${e.data.author}` : ''}
       </div>

@@ -2,6 +2,10 @@
 const starlightRoute = (Astro.locals as any)['starlightRoute'] as { siteTitle?: string; siteTitleHref?: string } | undefined;
 const { siteTitle = 'Notes', siteTitleHref = '/' } = starlightRoute || {};
 const base = import.meta.env.BASE_URL;
+const makePath = (path: string) => {
+  const fullPath = base + path;
+  return fullPath.startsWith('//') ? fullPath.substring(1) : fullPath;
+};
 ---
 
 <a href={siteTitleHref} class="site-title sl-flex">
@@ -11,7 +15,7 @@ const base = import.meta.env.BASE_URL;
 		style="inline-size:2rem;block-size:2rem;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;"
 	>
 		<img
-			src={base + '/favicon.svg'}
+			src={makePath('/favicon.svg')}
 			width="32"
 			height="32"
 			alt=""

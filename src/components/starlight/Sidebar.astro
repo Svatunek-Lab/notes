@@ -73,7 +73,13 @@ const showPosts = postsList.total > 0 || isInSection('/posts/');
 const base = import.meta.env.BASE_URL;
 
 function pathForSlug(slug: string) {
-  return base + '/' + slug + '/';
+  const path = base + '/' + slug + '/';
+  return path.startsWith('//') ? path.substring(1) : path;
+}
+
+function makePath(relPath: string) {
+  const path = base + relPath;
+  return path.startsWith('//') ? path.substring(1) : path;
 }
 
 function isCurrent(href: string) {
@@ -88,7 +94,7 @@ function isInSection(sectionPath: string) {
 <SidebarPersister>
 	<ul class="top-level">
 		<li>
-			<a href={base + '/latest/'} aria-current={isCurrent(base + '/latest/') && 'page'} class="large">Latest</a>
+			<a href={makePath('/latest/')} aria-current={isCurrent(makePath('/latest/')) && 'page'} class="large">Latest</a>
 		</li>
 
 		{showNotes && (
@@ -97,8 +103,8 @@ function isInSection(sectionPath: string) {
 					<summary>
 						<a
 							class="section-link large"
-							href={base + '/notes/'}
-							aria-current={isCurrent('/notes/') && 'page'}
+							href={makePath('/notes/')}
+							aria-current={isCurrent(makePath('/notes/')) && 'page'}
 							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
 						>
 							Notes
@@ -118,7 +124,7 @@ function isInSection(sectionPath: string) {
 						))}
 						{notesList.total > notesList.items.length && (
 							<li>
-							<a class="show-all" href={base + 'notes/'}>… (show all)</a>
+							<a class="show-all" href={makePath('/notes/')}>… (show all)</a>
 							</li>
 						)}
 					</ul>
@@ -132,8 +138,8 @@ function isInSection(sectionPath: string) {
 					<summary>
 						<a
 							class="section-link large"
-							href={base + '/whitepapers/'}
-							aria-current={isCurrent('/whitepapers/') && 'page'}
+							href={makePath('/whitepapers/')}
+							aria-current={isCurrent(makePath('/whitepapers/')) && 'page'}
 							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
 						>
 							Whitepapers
@@ -156,7 +162,7 @@ function isInSection(sectionPath: string) {
 						))}
 						{whitepapersTotal > whitepaperLatest.length && (
 							<li>
-							<a class="show-all" href={base + 'whitepapers/'}>… (show all)</a>
+							<a class="show-all" href={makePath('/whitepapers/')}>… (show all)</a>
 							</li>
 						)}
 					</ul>
@@ -170,8 +176,8 @@ function isInSection(sectionPath: string) {
 					<summary>
 						<a
 							class="section-link large"
-							href={base + '/tutorials/'}
-							aria-current={isCurrent('/tutorials/') && 'page'}
+							href={makePath('/tutorials/')}
+							aria-current={isCurrent(makePath('/tutorials/')) && 'page'}
 							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
 						>
 							Tutorials
@@ -191,7 +197,7 @@ function isInSection(sectionPath: string) {
 						))}
 						{tutorialsList.total > tutorialsList.items.length && (
 							<li>
-							<a class="show-all" href={base + 'tutorials/'}>… (show all)</a>
+							<a class="show-all" href={makePath('/tutorials/')}>… (show all)</a>
 							</li>
 						)}
 					</ul>
@@ -205,8 +211,8 @@ function isInSection(sectionPath: string) {
 					<summary>
 						<a
 							class="section-link large"
-							href={base + '/posts/'}
-							aria-current={isCurrent('/posts/') && 'page'}
+							href={makePath('/posts/')}
+							aria-current={isCurrent(makePath('/posts/')) && 'page'}
 							onclick="event.preventDefault(); event.stopPropagation(); window.location.href = this.href;"
 						>
 							Posts
@@ -226,7 +232,7 @@ function isInSection(sectionPath: string) {
 						))}
 						{postsList.total > postsList.items.length && (
 							<li>
-							<a class="show-all" href={base + 'posts/'}>… (show all)</a>
+							<a class="show-all" href={makePath('/posts/')}>… (show all)</a>
 							</li>
 						)}
 					</ul>
