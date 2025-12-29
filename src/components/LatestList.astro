@@ -19,11 +19,13 @@ const filtered = docs
   })
   .sort((a, b) => (toDate(b.data.date)?.getTime() ?? 0) - (toDate(a.data.date)?.getTime() ?? 0))
   .slice(0, limit);
+
+const base = import.meta.env.BASE_URL;
 ---
 <ul>
   {filtered.map((e) => (
     <li>
-      <a href={`/${e.slug}/`}>{e.data.title}</a>
+      <a href={`${base}${e.slug}/`}>{e.data.title}</a>
       <div class="meta">
         {formatDate(e.data.date)} {e.data.author ? `— ${e.data.author}` : ''}
       </div>

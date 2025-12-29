@@ -24,9 +24,9 @@ const description = rawDescription.trim().replace(/\s+/g, ' ');
 
 const canonicalBase = (() => {
 	const configured = Astro.site;
-	if (!configured) return new URL('https://notes.svatunek-lab.com');
+	if (!configured) return new URL('https://svatunek-lab.github.io/notes/');
 	// Avoid emitting localhost canonical URLs.
-	if (configured.hostname === 'localhost') return new URL('https://notes.svatunek-lab.com');
+	if (configured.hostname === 'localhost') return new URL('https://svatunek-lab.github.io/notes/');
 	return configured;
 })();
 

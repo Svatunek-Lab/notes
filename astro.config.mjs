@@ -7,7 +7,6 @@ const BASE = "/notes";
 
 export default defineConfig({
   // Used by integrations like `@astrojs/sitemap` to generate absolute URLs.
-  // Set `SITE` in your environment for production
   site: SITE,
   base: BASE,
 
