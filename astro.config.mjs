@@ -2,10 +2,17 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import starlight from "@astrojs/starlight";
 
+const SITE = "https://<user>.github.io";
+const BASE = "/<repo>";
+
 export default defineConfig({
   // Used by integrations like `@astrojs/sitemap` to generate absolute URLs.
-  // Set `SITE` in your environment for production (e.g. https://notes.example.com).
-  site: process.env.SITE ?? "http://localhost:4321",
+  // Set `SITE` in your environment for production
+  site: SITE,
+  base: BASE,
+
+
+
   integrations: [
     starlight({
       title: "Notes - Svatunek // Lab",
@@ -30,7 +37,7 @@ export default defineConfig({
         { label: 'Posts', link: '/posts/' },
       ],
       // Starlight uses `src/content/docs/` by default.
-      // Keep defaults for now; you can rename later.
+      // Keep defaults for now;
     }),
     // Must come after Starlight so its Expressive Code integration runs before MDX.
     mdx(),
