@@ -2,8 +2,8 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import starlight from "@astrojs/starlight";
 
-const SITE = "https://svatunek-lab.github.io";
-const BASE = "/notes";
+const SITE = "https://notes.svatunek-lab.com";
+const BASE = "";
 
 export default defineConfig({
   // Used by integrations like `@astrojs/sitemap` to generate absolute URLs.
