@@ -686,6 +686,9 @@
             },
             "version": {
               "type": "string"
+            },
+            "image": {
+              "type": "string"
             }
           }
         }

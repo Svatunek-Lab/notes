@@ -6,6 +6,13 @@
   :global(html) {
     scrollbar-gutter: stable;
   }
+
+  /* Center search box and add top padding */
+  :global(.pagefind-ui) {
+    max-width: 600px;
+    margin: 1.5rem auto 0;
+    padding: 0 1rem;
+  }
 }
 
 /* Make the content column align more to the left within the main area.

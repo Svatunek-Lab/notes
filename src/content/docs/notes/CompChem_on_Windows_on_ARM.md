@@ -1,6 +1,6 @@
 ---
 title: "(Comp)Chem on Windows on ARM"
-date: 2025-12-27
+date: 2025-12-29
 author: Dennis Svatunek
 abstract: "Notes on using Windows on ARM for (Computational) Chemistry. What works and what doesn't."
 head: []
