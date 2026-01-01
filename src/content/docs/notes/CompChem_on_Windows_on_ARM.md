@@ -22,6 +22,7 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 | [ORCA 6.1.1](#orca-611-linux) | Computational chemistry | WSL2 (ARM) | ✅ |
 | [Avogadro 2](#avogadro-2) | Computational chemistry | Windows (x64 emulation) | ✅ |
 | [Chemcraft](#chemcraft) | Computational chemistry | Windows (x64 emulation) | ✅ |
+| [GaussView 6](#gv6) | Computational chemistry | Windows (x64 emulation) | 🟡 |
 
 ## Hardware and environment
 
@@ -125,6 +126,14 @@ I have <b>not yet tried compiling xTB from source</b> on ARM, which should resol
   <div class="swcard-meta"><b>Version:</b> 1.8</div>
   <hr class="swcard-divider">
   <p>Seems to work so far. Pink atoms and everything.</p>
+</div>
+
+<div class="swcard" id="gv6">
+  <div class="swcard-title">GaussView 6 🟡</div>
+  <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
+  <div class="swcard-meta"><b>Version:</b> 6.0.16</div>
+  <hr class="swcard-divider">
+  <p>Works but 3D model manipulation isn't smooth. Noticeable lag in rotations/zoom. High GPU usage.</p>
 </div>
 
 ---
