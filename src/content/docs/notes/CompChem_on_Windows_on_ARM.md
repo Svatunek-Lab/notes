@@ -16,6 +16,7 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 |---------|----------|----------|--------|
 | [MobaXterm](#mobaxterm) | General | Windows (x86 emulation) | ✅ |
 | [WinSCP](#winscp) | General | Windows (x86 emulation) | ✅ |
+| [Notepad++](#npp) | General | Windows (ARM) | ✅ |
 | [ChemDraw 25](#chemdraw-25) | Chemistry (general) | Windows (x64 emulation) | ✅ |
 | [xTB 6.7.1](#xTB-671) | Computational chemistry | WSL2 (ARM, conda) | 🔴 |
 | [ORCA 6.1.1](#orca-611-linux) | Computational chemistry | WSL2 (ARM) | ✅ |
@@ -67,6 +68,13 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
   <div class="swcard-meta"><b>Version:</b> 6.5.5</div>
   <hr class="swcard-divider">
   <p>Works flawless so far.</p>
+</div>
+
+<div class="swcard" id="npp">
+  <div class="swcard-title">Notepad++ ✅</div>
+  <div class="swcard-meta"><b>Platform:</b> Windows  (ARM native)</div>
+  <hr class="swcard-divider">
+  <p>ARM native, works without problems.</p>
 </div>
 
 ---
