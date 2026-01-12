@@ -1,6 +1,6 @@
 ---
 title: "(Comp)Chem on Windows on ARM"
-date: 2025-12-29
+date: 2026-01-12
 author: Dennis Svatunek
 abstract: "Notes on using Windows on ARM for (Computational) Chemistry. What works and what doesn't."
 head: []
@@ -18,11 +18,14 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 | [WinSCP](#winscp) | General | Windows (x86 emulation) | ✅ |
 | [Notepad++](#npp) | General | Windows (ARM) | ✅ |
 | [ChemDraw 25](#chemdraw-25) | Chemistry (general) | Windows (x64 emulation) | ✅ |
+| [ChemDoodle](#chemdoodle) | Chemistry (general) | Windows (x64 emulation) | ✅ |
+| [ChemDoodle 3D](#chemdoodle3D) | Chemistry (general) | Windows (x64 emulation) | ✅ |
 | [xTB 6.7.1](#xTB-671) | Computational chemistry | WSL2 (ARM, conda) | 🔴 |
 | [ORCA 6.1.1](#orca-611-linux) | Computational chemistry | WSL2 (ARM) | ✅ |
 | [Avogadro 2](#avogadro-2) | Computational chemistry | Windows (x64 emulation) | ✅ |
 | [Chemcraft](#chemcraft) | Computational chemistry | Windows (x64 emulation) | ✅ |
 | [GaussView 6](#gv6) | Computational chemistry | Windows (x64 emulation) | 🟡 |
+
 
 ## Hardware and environment
 
@@ -87,6 +90,18 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
   <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
   <hr class="swcard-divider">
   <p>The x86 Windows version of ChemDraw 25 runs without noticeable issues via Windows’ built-in x86 emulation. Drawing and pasting as embedded object to Office works.</p>
+</div>
+<div class="swcard" id="chemdoodle">
+  <div class="swcard-title">ChemDoodle ✅</div>
+  <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
+  <hr class="swcard-divider">
+  <p>Slow loading but otherwise runs fine.</p>
+</div>
+<div class="swcard" id="chemdoodle3D">
+  <div class="swcard-title">ChemDoodle 3D ✅</div>
+  <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
+  <hr class="swcard-divider">
+  <p>Runs fine.</p>
 </div>
 
 ---
