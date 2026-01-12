@@ -94,12 +94,14 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 <div class="swcard" id="chemdoodle">
   <div class="swcard-title">ChemDoodle ✅</div>
   <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
+  <div class="swcard-meta"><b>Version:</b> 12.9.0</div>
   <hr class="swcard-divider">
   <p>Slow loading but otherwise runs fine.</p>
 </div>
 <div class="swcard" id="chemdoodle3D">
   <div class="swcard-title">ChemDoodle 3D ✅</div>
   <div class="swcard-meta"><b>Platform:</b> Windows (x64 via ARM emulation)</div>
+  <div class="swcard-meta"><b>Version:</b> 7.7.0</div>
   <hr class="swcard-divider">
   <p>Runs fine.</p>
 </div>
