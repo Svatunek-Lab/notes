@@ -1,6 +1,6 @@
 ---
 title: "(Comp)Chem on Windows on ARM"
-date: 2026-01-12
+date: 2026-01-19
 author: Dennis Svatunek
 abstract: "Notes on using Windows on ARM for (Computational) Chemistry. What works and what doesn't."
 head: []
@@ -14,6 +14,7 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 
 | Software | Category | Platform | Status |
 |---------|----------|----------|--------|
+| [Endnote](#endnote) | General | Windows (x86 emulation) | ✅ |
 | [MobaXterm](#mobaxterm) | General | Windows (x86 emulation) | ✅ |
 | [WinSCP](#winscp) | General | Windows (x86 emulation) | ✅ |
 | [Notepad++](#npp) | General | Windows (ARM) | ✅ |
@@ -52,10 +53,11 @@ This is a **living document** based on my day-to-day use of a **Zenbook A14 (Sna
 #### Endnote
 
 <div class="swcard" id="endnote">
-  <div class="swcard-title">Endnote ⚪</div>
-  <div class="swcard-meta"><b>Platform:</b> Windows</div>
+  <div class="swcard-title">Endnote ✅</div>
+  <div class="swcard-meta"><b>Platform:</b> Windows  (x86 via ARM emulation)</div>
+  <div class="swcard-meta"><b>Version:</b> 2025</div>
   <hr class="swcard-divider">
-  <p>To-Do</p>
+  <p>Works without problems.</p>
 </div>
 
 <div class="swcard" id="mobaxterm">
