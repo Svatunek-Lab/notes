@@ -61,7 +61,7 @@ docker run -d \
   tail -f /dev/null
 ```
 
-The ORCA installation is mounted read-only at `/orca`, calculation files are shared through `/tmp/orca-mlips`, and the Hugging Face cache is mounted so the UMA model does not need to be downloaded again for every container.
+The ORCA installation is mounted read-only at `/orca`, which is useful for troubleshooting from inside the container. Calculation files are shared through `/tmp/orca-mlips`, and the Hugging Face cache and credentials are mounted so cached model files and authentication can be reused.
 
 ORCA calls the following wrapper as the external program. It stages the temporary ORCA input files into the shared jobs directory, runs `uma` inside the already-running container, and copies the generated files back into ORCA's working directory:
 
@@ -272,4 +272,3 @@ H -6.251700 -2.103000 -1.672300
 H -7.864100 -2.521500 -1.066900
 *
 ```
-
